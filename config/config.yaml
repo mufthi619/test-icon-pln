@@ -1,0 +1,6 @@
+server:
+  address: ":8001"
+  timeout: 30s
+
+external_api:
+  timeout: 10s
