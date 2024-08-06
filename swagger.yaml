@@ -1,0 +1,74 @@
+openapi: 3.0.0
+info:
+  title: ICON PLN Dashboard
+  description: Icon PLN Test.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8001
+    description: Local development server
+
+paths:
+  /api/dashboard:
+    get:
+      summary: Get office room usage and consumption summary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Response status code (200 for success)
+                  message:
+                    type: string
+                    description: Response message
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OfficeSummary'
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    OfficeSummary:
+      type: object
+      properties:
+        office_name:
+          type: string
+          description: Name of the office
+        room_response:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoomUsage'
+
+    RoomUsage:
+      type: object
+      properties:
+        room_name:
+          type: string
+          description: Name of the room
+        usage_percentage:
+          type: number
+          format: float
+          description: Percentage of room usage
+        consumption_nominal:
+          type: integer
+          description: Total consumption amount in nominal currency
+        consumption_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsumptionItem'
+
+    ConsumptionItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the consumption type (e.g., Snack Siang)
+        total:
+          type: integer
+          description: Total quantity of the consumption type
